@@ -1,0 +1,6 @@
+FROM evovetech/android-base
+
+COPY tools ${ANDROID_INSTALL_TOOLS}
+WORKDIR ${ANDROID_INSTALL_TOOLS}
+ENTRYPOINT ["./entrypoint.sh"]
+VOLUME ${ANDROID_INSTALL_ROOT}
