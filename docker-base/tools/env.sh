@@ -16,7 +16,7 @@ function print_header() {
 }
 
 function help() {
-    figlet "usage:"
+    echo "usage:"
     echo "update_sdk: Updates the SDK"
     echo "andep: Installs one or more android Packets."
     echo "   -Example: anddep \"platforms;android-26\""
