@@ -25,17 +25,21 @@ RUN apk -U update && apk -U add \
 
 ENV ANDROID_INSTALL_ROOT /opt/android
 ENV ANDROID_INSTALL_TOOLS ${ANDROID_INSTALL_ROOT}/tools
-ENV ANDROID_INSTALL_LICENSES ${ANDROID_INSTALL_ROOT}/licenses
 ENV ANDROID_HOME ${ANDROID_INSTALL_ROOT}/sdk
 
-# Copy Licenses
-COPY licenses ${ANDROID_INSTALL_LICENSES}
-
 # Bootstrap
-COPY tools/android-env.sh ${ANDROID_INSTALL_TOOLS}/android-env.sh
-COPY tools/android-sdkmanager.sh ${ANDROID_INSTALL_TOOLS}/android-sdkmanager.sh
+COPY tools/env.sh ${ANDROID_INSTALL_TOOLS}/env.sh
+COPY tools/sdkmanager.sh ${ANDROID_INSTALL_TOOLS}/sdkmanager.sh
 COPY tools/bootstrap.sh ${ANDROID_INSTALL_TOOLS}/bootstrap.sh
+RUN addgroup android \
+    && adduser -D -S -G android android \
+    && chown -R android:android ${ANDROID_INSTALL_ROOT}
+USER android
 RUN ${ANDROID_INSTALL_TOOLS}/bootstrap.sh
+
+# Copy Licenses
+ENV ANDROID_INSTALL_LICENSES ${ANDROID_INSTALL_ROOT}/licenses
+COPY licenses ${ANDROID_INSTALL_LICENSES}
 
 # Copy rest of tools
 COPY tools ${ANDROID_INSTALL_TOOLS}

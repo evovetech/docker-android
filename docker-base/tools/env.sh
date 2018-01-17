@@ -27,7 +27,7 @@ function help() {
 }
 
 function android_sdkmanager() {
-    local cmd="${ANDROID_INSTALL_TOOLS}/android-sdkmanager.sh"
+    local cmd="${ANDROID_INSTALL_TOOLS}/sdkmanager.sh"
     $cmd "sdkmanager $@"
 }
 
