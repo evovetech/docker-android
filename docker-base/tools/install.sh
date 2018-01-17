@@ -14,9 +14,6 @@ cd ${ANDROID_INSTALL_ROOT}
 echo "Accepting Licenses"
 android_sdkmanager "--licenses --verbose"
 
-echo "Updating SDK"
-update_sdk
-
 echo "Installing packages"
 PREV_IFS="$IFS"
 IFS=$'\n'
@@ -25,3 +22,6 @@ IFS="${PREV_IFS}"
 for pkg in "${pkgs[@]}"; do
   android_sdkmanager "${pkg} --verbose"
 done
+
+echo "Updating SDK"
+update_sdk
