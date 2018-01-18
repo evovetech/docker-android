@@ -28,8 +28,6 @@ ENV ANDROID_INSTALL_TOOLS ${ANDROID_INSTALL_ROOT}/tools
 ENV ANDROID_HOME ${ANDROID_INSTALL_ROOT}/sdk
 
 # Bootstrap
-COPY tools/env.sh ${ANDROID_INSTALL_TOOLS}/env.sh
-COPY tools/sdkmanager.sh ${ANDROID_INSTALL_TOOLS}/sdkmanager.sh
 COPY tools/bootstrap.sh ${ANDROID_INSTALL_TOOLS}/bootstrap.sh
 RUN addgroup android \
     && adduser -D -S -G android android \

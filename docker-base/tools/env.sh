@@ -31,19 +31,29 @@ function android_sdkmanager() {
     $cmd "sdkmanager $@"
 }
 
-function update_sdk() {
-    android_sdkmanager "--update"
+function android_update() {
+    android_sdkmanager "--update --verbose"
 }
 
-function andep() {
-    if [ -z ${1} ]; then
+function android_install() {
+    if [[ $# -eq 0 ]]; then
         help
         return 1
     fi
-    android_sdkmanager  "${1}"
+
+    echo "Installing packages"
+    local pref_ifs="$IFS"
+    IFS=$'\n'
+    local pkgs=($( cat "$@" ))
+    IFS="${pref_ifs}"
+
+    local pkg
+    for pkg in "${pkgs[@]}"; do
+      android_sdkmanager "${pkg} --verbose"
+    done
 }
 
 export -f help
 export -f android_sdkmanager
-export -f update_sdk
-export -f andep
+export -f android_update
+export -f android_install

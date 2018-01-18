@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source "${ANDROID_INSTALL_TOOLS}/env.sh"
 cd ${ANDROID_INSTALL_ROOT}
 
 echo "Set ANDROID_HOME to ${ANDROID_HOME}"
