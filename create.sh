@@ -10,6 +10,14 @@ if [[ $st -ne 0 ]]; then
   exit $st
 fi
 
+# Create gradle image
+cd ${dir}/android
+docker build -t evovetech/android-gradle .
+st=$?
+if [[ $st -ne 0 ]]; then
+  exit $st
+fi
+
 # Create main image
 cd ${dir}/docker
 docker build -t evovetech/android .
@@ -22,6 +30,7 @@ fi
 docker create \
     --name android-sdk \
     --mount type=volume,source=android-sdk,destination=/opt/android/sdk \
+    --mount type=volume,source=gradle-home,destination=/home/android/.gradle \
     evovetech/android \
     &> /dev/null
 

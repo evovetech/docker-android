@@ -1,6 +1,7 @@
-FROM evovetech/android-base
+FROM evovetech/android-gradle
 
 COPY tools ${ANDROID_INSTALL_TOOLS}
 WORKDIR ${ANDROID_INSTALL_TOOLS}
 ENTRYPOINT ["./entrypoint.sh"]
 VOLUME ${ANDROID_HOME}
+VOLUME ${GRADLE_HOME}
