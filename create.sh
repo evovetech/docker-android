@@ -3,7 +3,7 @@
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Create base image
-cd ${dir}/docker-base
+cd ${dir}/base
 docker build -t evovetech/android-base .
 st=$?
 if [[ $st -ne 0 ]]; then
@@ -11,7 +11,7 @@ if [[ $st -ne 0 ]]; then
 fi
 
 # Create gradle image
-cd ${dir}/android
+cd ${dir}/gradle
 docker build -t evovetech/android-gradle .
 st=$?
 if [[ $st -ne 0 ]]; then
@@ -19,7 +19,7 @@ if [[ $st -ne 0 ]]; then
 fi
 
 # Create main image
-cd ${dir}/docker
+cd ${dir}/main
 docker build -t evovetech/android .
 st=$?
 if [[ $st -ne 0 ]]; then
