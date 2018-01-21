@@ -1,7 +1,6 @@
 FROM evovetech/android-base
 
-ENV GRADLE_INIT_DIR=/home/android/gradle-init \
-    GRADLE_HOME=/home/android/.gradle
+ENV GRADLE_INIT_DIR=${HOME}/gradle-init \
+    GRADLE_HOME=${HOME}/.gradle
 COPY --chown=android:android . ${GRADLE_INIT_DIR}
-WORKDIR ${GRADLE_INIT_DIR}
-RUN tools/install.sh
+RUN ${GRADLE_INIT_DIR}/tools/install.sh

@@ -45,3 +45,5 @@ COPY --chown=android:android tools ${ANDROID_INSTALL_TOOLS}
 
 # Install
 RUN ${ANDROID_INSTALL_TOOLS}/install.sh
+ENV HOME /home/android
+WORKDIR ${HOME}
