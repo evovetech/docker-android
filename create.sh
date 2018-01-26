@@ -29,7 +29,7 @@ fi
 # Create container with volume
 docker create \
     --name android-sdk \
-    --mount type=volume,source=android-sdk,destination=/opt/android/sdk \
+    --mount type=volume,source=android-sdk,destination=/home/android/sdk \
     --mount type=volume,source=gradle-home,destination=/home/android/.gradle \
     evovetech/android \
     &> /dev/null

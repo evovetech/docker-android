@@ -23,27 +23,24 @@ RUN apk -U update && apk -U add \
   && rm -rf /tmp/* \
 	&& rm -rf /var/cache/apk/*
 
-ENV ANDROID_INSTALL_ROOT=/opt/android
-ENV ANDROID_INSTALL_TOOLS=${ANDROID_INSTALL_ROOT}/tools \
-    ANDROID_HOME=${ANDROID_INSTALL_ROOT}/sdk \
-    ANDROID_INSTALL_LICENSES=${ANDROID_INSTALL_ROOT}/licenses
+ENV ROOT_DIR=/home/android
+ENV HOME=${ROOT_DIR} \
+    ANDROID_HOME=${ROOT_DIR}/sdk \
+    TOOLS_DIR=${ROOT_DIR}/tools \
+    LICENSES_DIR=${ROOT_DIR}/licenses
 
 # Bootstrap
 RUN addgroup android \
-    && adduser -D -S -G android android \
-    && mkdir -p ${ANDROID_INSTALL_ROOT} \
-    && chown -R android:android ${ANDROID_INSTALL_ROOT}
-COPY --chown=android:android tools/bootstrap.sh ${ANDROID_INSTALL_TOOLS}/bootstrap.sh
+    && adduser -D -S -G android -h ${HOME} android
 USER android
-RUN ${ANDROID_INSTALL_TOOLS}/bootstrap.sh
+COPY --chown=android:android tools/bootstrap.sh ${TOOLS_DIR}/bootstrap.sh
+RUN ${TOOLS_DIR}/bootstrap.sh
 
 # Copy Licenses
-COPY --chown=android:android licenses ${ANDROID_INSTALL_LICENSES}
+COPY --chown=android:android licenses ${LICENSES_DIR}
 
 # Copy rest of tools
-COPY --chown=android:android tools ${ANDROID_INSTALL_TOOLS}
+COPY --chown=android:android tools ${TOOLS_DIR}
 
 # Install
-RUN ${ANDROID_INSTALL_TOOLS}/install.sh
-ENV HOME /home/android
-WORKDIR ${HOME}
+RUN ${TOOLS_DIR}/install.sh

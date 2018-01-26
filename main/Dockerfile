@@ -1,6 +1,5 @@
 FROM evovetech/android-gradle
 
+WORKDIR ${HOME}
 COPY --chown=android:android tools/entrypoint.sh ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
-VOLUME ${ANDROID_HOME}
-VOLUME ${GRADLE_HOME}

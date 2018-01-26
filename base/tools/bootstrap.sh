@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ${ANDROID_INSTALL_ROOT}
+cd ${ROOT_DIR}
 
 echo "Set ANDROID_HOME to ${ANDROID_HOME}"
 mkdir -p "${ANDROID_HOME}"
