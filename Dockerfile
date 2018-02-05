@@ -42,7 +42,7 @@ COPY licenses ${LICENSES_DIR}
 COPY tools ${TOOLS_DIR}
 
 # Install
-RUN sudo chown -R android:android ${HOME}
+RUN chown -R android:android ${HOME}
 USER android
 RUN ${TOOLS_DIR}/install.sh
 WORKDIR ${HOME}
