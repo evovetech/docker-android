@@ -32,18 +32,15 @@ ENV HOME=${ROOT_DIR} \
 # Bootstrap
 RUN addgroup android \
     && adduser -D -S -G android -h ${HOME} android
-COPY tools/bootstrap.sh ${TOOLS_DIR}/bootstrap.sh
+USER android
+COPY --chown=android:android tools/bootstrap.sh ${TOOLS_DIR}/bootstrap.sh
 RUN ${TOOLS_DIR}/bootstrap.sh
 
 # Copy Licenses
-COPY licenses ${LICENSES_DIR}
+COPY --chown=android:android licenses ${LICENSES_DIR}
 
 # Copy rest of tools
-COPY tools ${TOOLS_DIR}
+COPY --chown=android:android tools ${TOOLS_DIR}
 
 # Install
-RUN chown -R android:android ${HOME}
-USER android
 RUN ${TOOLS_DIR}/install.sh
-WORKDIR ${HOME}
-ENTRYPOINT ["./entrypoint.sh"]
