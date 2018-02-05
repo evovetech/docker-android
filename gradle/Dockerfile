@@ -1,4 +1,4 @@
-FROM evovetech/android-base
+FROM evovetech/android:base
 
 ENV GRADLE_INIT_DIR=${HOME}/gradle-init \
     GRADLE_HOME=${HOME}/.gradle
