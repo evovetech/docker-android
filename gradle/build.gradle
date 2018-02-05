@@ -1,6 +1,0 @@
-import static org.gradle.api.tasks.wrapper.Wrapper.DistributionType
-
-task wrapper(type: Wrapper) {
-    distributionType = DistributionType.ALL
-    gradleVersion = appGradleVersion
-}

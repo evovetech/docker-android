@@ -44,3 +44,5 @@ COPY --chown=android:android tools ${TOOLS_DIR}
 
 # Install
 RUN ${TOOLS_DIR}/install.sh
+WORKDIR ${HOME}
+ENTRYPOINT ["./entrypoint.sh"]
