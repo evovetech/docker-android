@@ -1,6 +1,8 @@
-FROM evovetech/android:base
+FROM evovetech/android
 
-ENV GRADLE_INIT_DIR=${HOME}/gradle-init \
-    GRADLE_HOME=${HOME}/.gradle
-COPY --chown=android:android . ${GRADLE_INIT_DIR}
-RUN ${GRADLE_INIT_DIR}/tools/install.sh
+ENV GRADLE_HOME=${HOME}/.gradle \
+    GRADLE_INIT_DIR=${HOME}/gradle-init
+COPY . ${GRADLE_INIT_DIR}
+RUN chown -R android:android ${GRADLE_INIT_DIR}
+RUN ${GRADLE_INIT_DIR}/tools/install.sh \
+    && rm -rf ${GRADLE_INIT_DIR}
