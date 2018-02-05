@@ -1,4 +1,6 @@
-FROM evovetech/android
+ARG DOCKER_REPO=evovetech/android
+ARG CACHE_TAG=latest
+FROM ${DOCKER_REPO}:base.${CACHE_TAG}
 
 USER root
 ENV GRADLE_HOME=${HOME}/.gradle \

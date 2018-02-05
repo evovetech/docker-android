@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Create base image
+cd base
+docker build -t "${DOCKER_REPO}:base.${CACHE_TAG}" .
+st=$?
+if [[ $st -ne 0 ]]; then
+  exit $st
+fi
+
+# Create gradle image
+cd ../gradle
+docker build -t "${DOCKER_REPO}:gradle.${CACHE_TAG}" .
+st=$?
+if [[ $st -ne 0 ]]; then
+  exit $st
+fi
+
+# Create main image
+cd ../main
+docker build -t "${DOCKER_REPO}:${CACHE_TAG}" .
+st=$?
+if [[ $st -ne 0 ]]; then
+  exit $st
+fi

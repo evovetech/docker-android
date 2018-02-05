@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker push "${IMAGE_NAME}.base"
+docker push "${IMAGE_NAME}.gradle"
