@@ -3,12 +3,14 @@
 GIT_REF="$( git rev-parse --short HEAD)"
 GIT_URL="https://github.com/evovetech/docker-android"
 read -d '' DOCKER_CMD <<"EOF"
+'
 # Run container with volumes
 docker run -it --rm \
     --mount type=volume,source=android-sdk,destination=/home/android/sdk \
     --mount type=volume,source=gradle-home,destination=/home/android/.gradle \
     --net=host \
     evovetech/android "$@"
+'
 EOF
 
 function _build() {
