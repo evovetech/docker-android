@@ -1,11 +1,5 @@
 FROM openjdk:8-jdk-alpine
 
-# microbadger
-ARG GIT_REF
-ARG GIT_URL
-LABEL org.label-schema.vcs-ref=${GIT_REF} \
-      org.label-schema.vcs-url=${GIT_URL}
-
 ARG GLIBC_VERSION="2.26-r0"
 
 # Install Required Tools
@@ -51,3 +45,8 @@ COPY tools ${TOOLS_DIR}
 RUN chown -R android:android ${HOME}
 USER android
 RUN ${TOOLS_DIR}/install.sh
+
+# microbadger
+ARG GIT_URL
+LABEL org.label-schema.vcs-url=${GIT_URL} \
+      org.label-schema.schema-version="1.0"

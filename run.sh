@@ -9,7 +9,9 @@ if [[ $st -ne 0 ]]; then
   exit $st
 fi
 
-# Run with created volume
+# Run container with volumes
 docker run -it --rm \
-    --volumes-from android-sdk \
+    --mount type=volume,source=mobileapps-androidSdk,destination=/home/android/sdk \
+    --mount type=volume,source=mobileapps-gradle,destination=/home/android/.gradle \
+    --net=host \
     evovetech/android "$@"
