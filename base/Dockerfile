@@ -3,8 +3,8 @@ FROM openjdk:8-jdk-alpine
 # microbadger
 ARG GIT_REF
 ARG GIT_URL
-LABEL tech.evove.vcs-ref=${GIT_REF} \
-      tech.evove.vcs-url=${GIT_URL}
+LABEL org.label-schema.vcs-ref=${GIT_REF} \
+      org.label-schema.vcs-url=${GIT_URL}
 
 ARG GLIBC_VERSION="2.26-r0"
 
