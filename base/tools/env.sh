@@ -4,7 +4,7 @@ export ANDROID_SDK_ROOT=${ANDROID_HOME}
 export ANDROID_SDK_HOME=${ANDROID_HOME}
 export ANDROID_SDK=${ANDROID_HOME}
 
-export PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/emulator:${ANDROID_HOME}/bin:
+export PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/emulator:${ANDROID_HOME}/bin
 
 function print_header() {
     figlet SBB CFF FFS
@@ -42,10 +42,10 @@ function android_install() {
     fi
 
     echo "Installing packages"
-    local pref_ifs="$IFS"
+    local prev_ifs="$IFS"
     IFS=$'\n'
     local pkgs=($( cat "$@" ))
-    IFS="${pref_ifs}"
+    IFS="${prev_ifs}"
 
     local pkg
     for pkg in "${pkgs[@]}"; do

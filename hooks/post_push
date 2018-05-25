@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker push "${DOCKER_REPO}:base.${CACHE_TAG}"
-docker push "${DOCKER_REPO}:gradle.${CACHE_TAG}"
+docker push "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
+docker push "${DOCKER_REPO}:gradle.${GRADLE_VERSION}"

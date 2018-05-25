@@ -1,6 +1,6 @@
 ARG DOCKER_REPO=evovetech/android
-ARG CACHE_TAG=latest
-FROM ${DOCKER_REPO}:gradle.${CACHE_TAG}
+ARG GRADLE_VERSION=latest
+FROM ${DOCKER_REPO}:gradle.${GRADLE_VERSION}
 
 WORKDIR ${HOME}
 COPY tools/entrypoint.sh ./entrypoint.sh
