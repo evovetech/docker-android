@@ -1,16 +1,39 @@
 #!/bin/bash
 
+default_gradle_version="gradle-4.1"
+function defaultCacheTag() {
+    if [[ -z "${CACHE_TAG}" ]]; then
+      print "${default_gradle_version}"
+    else
+      print "${CACHE_TAG}"
+    fi
+}
+function setGradleVersion() {
+  if [[ -z "${GRADLE_VERSION}" ]]; then
+      local tag="$( defaultCacheTag )"
+      case $tag in
+        gradle- )
+          ## ignore
+          ;;
+        * )
+          tag="${default_gradle_version}"
+          ;;
+      esac
+      export GRADLE_VERSION="${tag}"
+  fi
+}
+
 if [[ -z "${DOCKER_REPO}" ]]; then
   export DOCKER_REPO="evovetech/android"
 fi
 if [[ -z "${BASE_IMAGE_TAG}" ]]; then
   export BASE_IMAGE_TAG="latest"
 fi
-if [[ -z "${GRADLE_VERSION}" ]]; then
-  export GRADLE_VERSION="4.1"
-fi
 if [[ -z "${CACHE_TAG}" ]]; then
-  export CACHE_TAG="${BASE_IMAGE_TAG}.gradle-${GRADLE_VERSION}"
+  setGradleVersion
+  export CACHE_TAG="${GRADLE_VERSION}"
+else
+  setGradleVersion
 fi
 
 GIT_REF="$( git rev-parse --short HEAD)"
@@ -39,7 +62,9 @@ function _build() {
 }
 
 # Create base image
-cd base
+ROOT="$( pwd )"
+IMAGES="${ROOT}/images"
+cd ${IMAGES}/base
 _build "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
 st=$?
 if [[ $st -ne 0 ]]; then
@@ -47,7 +72,7 @@ if [[ $st -ne 0 ]]; then
 fi
 
 # Create gradle image
-cd ../gradle
+cd ${IMAGES}/gradle
 _build "${DOCKER_REPO}:gradle.${GRADLE_VERSION}"
 st=$?
 if [[ $st -ne 0 ]]; then
@@ -55,7 +80,7 @@ if [[ $st -ne 0 ]]; then
 fi
 
 # Create main image
-cd ../main
+cd ${ROOT}
 _build "${DOCKER_REPO}:${CACHE_TAG}"
 st=$?
 if [[ $st -ne 0 ]]; then
