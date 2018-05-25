@@ -3,4 +3,4 @@
 source ${DOCKERFILE_PATH}/hooks/__env.sh
 
 docker push "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
-docker push "${DOCKER_REPO}:gradle.${GRADLE_VERSION}"
+docker push "${DOCKER_REPO}:base.${GRADLE_VERSION}"

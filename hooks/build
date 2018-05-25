@@ -26,7 +26,7 @@ fi
 
 # Create gradle image
 cd ${IMAGES}/gradle
-_build "${DOCKER_REPO}:gradle.${GRADLE_VERSION}"
+_build "${DOCKER_REPO}:base.${GRADLE_VERSION}"
 st=$?
 if [[ $st -ne 0 ]]; then
   exit $st

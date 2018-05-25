@@ -1,6 +1,6 @@
 ARG DOCKER_REPO=evovetech/android
 ARG GRADLE_VERSION=gradle-4.1
-FROM ${DOCKER_REPO}:gradle.${GRADLE_VERSION}
+FROM ${DOCKER_REPO}:base.${GRADLE_VERSION}
 
 WORKDIR ${HOME}
 COPY tools/entrypoint.sh ./entrypoint.sh
