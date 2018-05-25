@@ -18,24 +18,30 @@ function _build() {
 }
 
 # Create base image
-cd ${IMAGES}/base
-_build "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
+(
+  cd ${IMAGES}/base &&
+  _build "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
+)
 st=$?
 if [[ $st -ne 0 ]]; then
   exit $st
 fi
 
 # Create gradle image
-cd ${IMAGES}/gradle
-_build "${DOCKER_REPO}:base.${GRADLE_VERSION}"
+(
+  cd ${IMAGES}/gradle &&
+  _build "${DOCKER_REPO}:base.${GRADLE_VERSION}"
+)
 st=$?
 if [[ $st -ne 0 ]]; then
   exit $st
 fi
 
 # Create main image
-cd ${DOCKERFILE_PATH}
-_build "${DOCKER_REPO}:${CACHE_TAG}"
+(
+  cd ${ROOT} &&
+  _build "${DOCKER_REPO}:${CACHE_TAG}"
+)
 st=$?
 if [[ $st -ne 0 ]]; then
   exit $st
