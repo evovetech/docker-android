@@ -52,11 +52,12 @@ EOF
 function _build() {
   local tag="$1"
   docker build \
+    --build-arg "DOCKER_REPO=${DOCKER_REPO}" \
+    --build-arg "BASE_IMAGE_TAG=${BASE_IMAGE_TAG}" \
+    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
     --build-arg "GIT_REF=${GIT_REF}" \
     --build-arg "GIT_URL=${GIT_URL}" \
     --build-arg "DOCKER_CMD=${DOCKER_CMD}" \
-    --build-arg "BASE_IMAGE_TAG=${BASE_IMAGE_TAG}" \
-    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
     -t "${tag}" \
     .
 }
