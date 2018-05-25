@@ -1,6 +1,6 @@
 #!/bin/bash
 
-default_gradle_version="gradle-4.1"
+default_gradle_version="gradle-4.5.1"
 function defaultCacheTag() {
     if [[ -z "${CACHE_TAG}" ]]; then
       printf "${default_gradle_version}"
