@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "${DOCKERFILE_PATH}/env.sh"
+source __env.sh
 
 function _build() {
   local tag="$1"

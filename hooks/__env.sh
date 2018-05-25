@@ -3,9 +3,9 @@
 default_gradle_version="gradle-4.1"
 function defaultCacheTag() {
     if [[ -z "${CACHE_TAG}" ]]; then
-      print "${default_gradle_version}"
+      printf "${default_gradle_version}"
     else
-      print "${CACHE_TAG}"
+      printf "${CACHE_TAG}"
     fi
 }
 function setGradleVersion() {
@@ -24,7 +24,7 @@ function setGradleVersion() {
 }
 
 if [[ -z "${DOCKERFILE_PATH}" ]]; then
-  export DOCKERFILE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  export DOCKERFILE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 fi
 if [[ -z "${DOCKER_REPO}" ]]; then
   export DOCKER_REPO="evovetech/android"
