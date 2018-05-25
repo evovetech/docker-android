@@ -1,4 +1,5 @@
 #!/bin/bash
 
+source "${DOCKERFILE_PATH}/env.sh"
 docker push "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
 docker push "${DOCKER_REPO}:gradle.${GRADLE_VERSION}"

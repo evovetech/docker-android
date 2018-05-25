@@ -1,53 +1,6 @@
 #!/bin/bash
 
-default_gradle_version="gradle-4.1"
-function defaultCacheTag() {
-    if [[ -z "${CACHE_TAG}" ]]; then
-      print "${default_gradle_version}"
-    else
-      print "${CACHE_TAG}"
-    fi
-}
-function setGradleVersion() {
-  if [[ -z "${GRADLE_VERSION}" ]]; then
-      local tag="$( defaultCacheTag )"
-      case $tag in
-        gradle- )
-          ## ignore
-          ;;
-        * )
-          tag="${default_gradle_version}"
-          ;;
-      esac
-      export GRADLE_VERSION="${tag}"
-  fi
-}
-
-if [[ -z "${DOCKER_REPO}" ]]; then
-  export DOCKER_REPO="evovetech/android"
-fi
-if [[ -z "${BASE_IMAGE_TAG}" ]]; then
-  export BASE_IMAGE_TAG="latest"
-fi
-if [[ -z "${CACHE_TAG}" ]]; then
-  setGradleVersion
-  export CACHE_TAG="${GRADLE_VERSION}"
-else
-  setGradleVersion
-fi
-
-GIT_REF="$( git rev-parse --short HEAD)"
-GIT_URL="https://github.com/evovetech/docker-android"
-read -d '' DOCKER_CMD <<"EOF"
-'
-# Run container with volumes
-docker run -it --rm \
-    --mount type=volume,source=android-sdk,destination=/home/android/sdk \
-    --mount type=volume,source=gradle-home,destination=/home/android/.gradle \
-    --net=host \
-    evovetech/android "$@"
-'
-EOF
+source "${DOCKERFILE_PATH}/env.sh"
 
 function _build() {
   local tag="$1"
@@ -63,8 +16,7 @@ function _build() {
 }
 
 # Create base image
-ROOT="$( pwd )"
-IMAGES="${ROOT}/images"
+IMAGES="${DOCKERFILE_PATH}/images"
 cd ${IMAGES}/base
 _build "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
 st=$?
@@ -81,7 +33,7 @@ if [[ $st -ne 0 ]]; then
 fi
 
 # Create main image
-cd ${ROOT}
+cd ${DOCKERFILE_PATH}
 _build "${DOCKER_REPO}:${CACHE_TAG}"
 st=$?
 if [[ $st -ne 0 ]]; then
