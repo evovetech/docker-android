@@ -24,14 +24,18 @@ function setGradleVersion() {
 }
 
 if [[ -z "${DOCKERFILE_PATH}" ]]; then
-  export DOCKERFILE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+  root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  export DOCKERFILE_PATH="${root}/Dockerfile"
 fi
+
 if [[ -z "${DOCKER_REPO}" ]]; then
   export DOCKER_REPO="evovetech/android"
 fi
+
 if [[ -z "${BASE_IMAGE_TAG}" ]]; then
   export BASE_IMAGE_TAG="latest"
 fi
+
 if [[ -z "${CACHE_TAG}" ]]; then
   setGradleVersion
   export CACHE_TAG="${GRADLE_VERSION}"

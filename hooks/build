@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source ${DOCKERFILE_PATH}/hooks/__env.sh
+ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
+IMAGES="${ROOT}/images"
+source ${ROOT}/env.sh
 
 function _build() {
   local tag="$1"
@@ -16,7 +18,6 @@ function _build() {
 }
 
 # Create base image
-IMAGES="${DOCKERFILE_PATH}/images"
 cd ${IMAGES}/base
 _build "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
 st=$?
