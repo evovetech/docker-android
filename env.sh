@@ -11,6 +11,7 @@ function defaultCacheTag() {
 function setGradleVersion() {
   if [[ -z "${GRADLE_VERSION}" ]]; then
       local tag="$( defaultCacheTag )"
+      echo "defaultCacheTag=${tag}"
       case $tag in
         gradle- )
           ## ignore
@@ -19,6 +20,7 @@ function setGradleVersion() {
           tag="${default_gradle_version}"
           ;;
       esac
+      echo "cacheTag=${tag}"
       export GRADLE_VERSION="${tag}"
   fi
 }
