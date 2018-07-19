@@ -23,30 +23,7 @@ RUN apk -U update && apk -U add \
   && rm -rf /tmp/* \
 	&& rm -rf /var/cache/apk/*
 
-ENV ROOT_DIR=/home/android
-ENV HOME=${ROOT_DIR} \
-    ANDROID_HOME=${ROOT_DIR}/sdk \
-    TOOLS_DIR=${ROOT_DIR}/tools \
-    LICENSES_DIR=${ROOT_DIR}/licenses
-
-# Bootstrap
-RUN addgroup android \
-    && adduser -D -S -G android -h ${HOME} android
-COPY tools/bootstrap.sh ${TOOLS_DIR}/bootstrap.sh
-RUN ${TOOLS_DIR}/bootstrap.sh
-
-# Copy Licenses
-COPY licenses ${LICENSES_DIR}
-
-# Copy rest of tools
-COPY tools ${TOOLS_DIR}
-
-# Install
-RUN chown -R android:android ${HOME}
-USER android
-RUN ${TOOLS_DIR}/install.sh
-
-# microbadger
-ARG GIT_URL
-LABEL org.label-schema.vcs-url=${GIT_URL} \
-      org.label-schema.schema-version="1.0"
+# MicroBadger
+LABEL \
+    org.label-schema.vcs-url="https://github.com/evovetech/docker-android" \
+    org.label-schema.schema-version="1.0"

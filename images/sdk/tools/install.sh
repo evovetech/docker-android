@@ -16,6 +16,3 @@ android_sdkmanager "--licenses --verbose"
 
 echo "Installing packages"
 android_install "${TOOLS_DIR}/package-list.txt"
-
-echo "Updating SDK"
-android_update

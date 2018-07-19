@@ -1,28 +1,12 @@
 #!/bin/bash
 
-default_gradle_version="gradle-4.5.1"
-function defaultCacheTag() {
-    if [[ -z "${CACHE_TAG}" ]]; then
-      printf "${default_gradle_version}"
-    else
-      printf "${CACHE_TAG}"
-    fi
-}
-function setGradleVersion() {
-  if [[ -z "${GRADLE_VERSION}" ]]; then
-      local tag="$( defaultCacheTag )"
-      echo "defaultCacheTag=${tag}"
-      case $tag in
-        gradle- )
-          ## ignore
-          ;;
-        * )
-          tag="${default_gradle_version}"
-          ;;
-      esac
-      echo "cacheTag=${tag}"
-      export GRADLE_VERSION="${tag}"
-  fi
+export ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export BIN_DIR="${ROOT_DIR}/bin"
+export CONCURRENT_LIB="concurrent.lib.sh"
+export BUILD_ARGS=()
+
+function add_build_arg {
+    BUILD_ARGS+=(--build-arg "$@")
 }
 
 if [[ -z "${DOCKERFILE_PATH}" ]]; then
@@ -34,27 +18,7 @@ if [[ -z "${DOCKER_REPO}" ]]; then
   export DOCKER_REPO="evovetech/android"
 fi
 
-if [[ -z "${BASE_IMAGE_TAG}" ]]; then
-  export BASE_IMAGE_TAG="latest"
+default_gradle_version="gradle-4.5.1"
+if [[ -z "${GRADLE_VERSION}" ]]; then
+  export GRADLE_VERSION="${default_gradle_version}"
 fi
-
-if [[ -z "${CACHE_TAG}" ]]; then
-  setGradleVersion
-  export CACHE_TAG="${GRADLE_VERSION}"
-else
-  setGradleVersion
-fi
-
-GIT_REF="$( git rev-parse --short HEAD)"
-GIT_URL="https://github.com/evovetech/docker-android"
-
-read -d '' DOCKER_CMD <<"EOF"
-'
-# Run container with volumes
-docker run -it --rm \
-    --mount type=volume,source=android-sdk,destination=/home/android/sdk \
-    --mount type=volume,source=gradle-home,destination=/home/android/.gradle \
-    --net=host \
-    evovetech/android "$@"
-'
-EOF

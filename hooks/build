@@ -1,48 +1,102 @@
 #!/bin/bash
 
-ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
-IMAGES="${ROOT}/images"
-source ${ROOT}/env.sh
+# set -e -o pipefail
 
-function _build() {
-  local tag="$1"
-  docker build \
-    --build-arg "DOCKER_REPO=${DOCKER_REPO}" \
-    --build-arg "BASE_IMAGE_TAG=${BASE_IMAGE_TAG}" \
-    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
-    --build-arg "GIT_REF=${GIT_REF}" \
-    --build-arg "GIT_URL=${GIT_URL}" \
-    --build-arg "DOCKER_CMD=${DOCKER_CMD}" \
-    -t "${tag}" \
+pathname="$( dirname "${DOCKERFILE_PATH}" )"
+ROOT="$( cd "${pathname}" && pwd )"
+IMAGES="${ROOT}/images"
+
+
+echo "build 1"
+
+source "${ROOT}/env.sh"
+
+echo "build 2"
+
+function build_image() {
+  local name="$1"
+  local tag="$2"
+  local args=(
+    build
+    "${@:3}"
+    -t "${DOCKER_REPO}/${name}:${tag}"
     .
+  )
+
+  # TODO: if debug
+  local log_args=(
+    '  $'
+    docker "${args_[@]}"
+  )
+  echo "${log_args[@]}"
+
+  cd "${IMAGES}/${name}"
+  docker "${args[@]}"
+
+  local st=$?
+  if [[ $st -ne 0 ]]; then
+    exit $st
+  fi
 }
 
-# Create base image
-(
-  cd ${IMAGES}/base &&
-  _build "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
-)
-st=$?
-if [[ $st -ne 0 ]]; then
-  exit $st
-fi
+echo "build 3"
 
-# Create gradle image
-(
-  cd ${IMAGES}/gradle &&
-  _build "${DOCKER_REPO}:base.${GRADLE_VERSION}"
-)
-st=$?
-if [[ $st -ne 0 ]]; then
-  exit $st
-fi
+function load_concurrent() {
+  # source "${BIN_DIR}/${CONCURRENT_LIB}"
+  ## TODO: get working
+  echo "not loaded"
+  return 1
+}
 
-# Create main image
-(
-  cd ${ROOT} &&
-  _build "${DOCKER_REPO}:${CACHE_TAG}"
-)
-st=$?
-if [[ $st -ne 0 ]]; then
-  exit $st
-fi
+function main() {
+  local repo_args=(
+    --build-arg "DOCKER_REPO=${DOCKER_REPO}"
+  )
+
+  local base_cmd=(
+    base latest
+  )
+
+  local sdk_cmd=(
+    sdk latest
+    "${repo_args[@]}"
+  )
+
+  local gradle_cmd=(
+    gradle "${GRADLE_VERSION}"
+    "${repo_args[@]}"
+    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}"
+  )
+
+  load_concurrent
+  local concurrent_st=$?
+  if [[ $concurrent_st -eq 0 ]]; then
+    local base_title="Building Base Image"
+    local sdk_title="Building SDK Image"
+    local gradle_title="Building Gradle Image"
+    local args=(
+        # Build base image
+        - "${base_title}"     build_image "${base_cmd[@]}"
+        # Build sdk image
+        - "${sdk_title}"      build_image "${sdk_cmd[@]}"
+        # Build gradle image
+        - "${gradle_title}"   build_image "${gradle_cmd[@]}"
+
+        --require "${base_title}"
+        --before  "${sdk_title}"
+        --before  "${gradle_title}"
+    )
+    concurrent "${args[@]}"
+  else
+    # Build base image
+    build_image "${base_cmd[@]}"
+    # Build sdk image
+    build_image "${sdk_cmd[@]}"
+    # Build gradle image
+    build_image "${gradle_cmd[@]}"
+  fi
+}
+
+echo "build 4"
+
+main "${@}"
