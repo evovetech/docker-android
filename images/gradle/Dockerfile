@@ -6,8 +6,6 @@ USER root
 ENV GRADLE_HOME=${HOME}/.gradle \
     GRADLE_INIT_DIR=${HOME}/gradle-init
 COPY . ${GRADLE_INIT_DIR}
-RUN chown -R android:android ${GRADLE_INIT_DIR}
-USER android
 
 # Install
 ARG GRADLE_VERSION
