@@ -56,10 +56,11 @@ function android_install() {
     local pkgs=($( cat "$@" ))
     IFS="${prev_ifs}"
 
-    android_install_packages "${pkgs[@]}"
+    android_install_packages ${pkgs[@]}
 }
 
 export -f help
 export -f android_sdkmanager
 export -f android_update
 export -f android_install
+export -f android_install_packages
