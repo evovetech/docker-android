@@ -1,7 +1,11 @@
 #!/bin/bash
 
-printenv
-source ${BUILD_PATH}/env.sh
+ROOT="${BUILD_PATH}"
+if [[ "${BUILD_PATH}" == "/" ]]; then
+  ROOT=""
+fi
+
+source ${ROOT}/env.sh
 
 function main() {
   local gradle="$1"
@@ -27,7 +31,7 @@ function build_main_image() {
   docker build \
       --build-arg "GRADLE_VERSION=${gradle}" \
       -t "${IMAGE_NAME}" \
-      "${BUILD_PATH}"
+      "${ROOT}"
 }
 
 function build_base_images() {
@@ -65,7 +69,7 @@ function build_image() {
   docker build \
       "${@:3}" \
       -t "evovetech/android-${name}:${tag}" \
-      "${BUILD_PATH}/images/${name}"
+      "${ROOT}/images/${name}"
 
   local st=$?
   if [[ $st -ne 0 ]]; then
