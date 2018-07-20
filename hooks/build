@@ -8,7 +8,7 @@ function build_image() {
     "${@:3}"
     "${BUILD_ARGS[@]}"
     -t "evovetech/android-${name}:${tag}"
-    .
+    "${ROOT}/images/${name}"
   )
 
   # TODO: if debug
@@ -18,8 +18,6 @@ function build_image() {
     "${args[@]}"
   )
   echo "${log_args[@]}"
-
-  cd "${IMAGES}/${name}"
   docker "${args[@]}"
 
   local st=$?
@@ -55,11 +53,9 @@ function build_base_images() {
 }
 
 ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
-IMAGES="${ROOT}/images"
-
-source "${ROOT}/bin/env.sh"
 
 # Build base images
+source ${ROOT}/bin/env.sh
 build_base_images
 
 # Build main image
