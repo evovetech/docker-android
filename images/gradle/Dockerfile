@@ -6,10 +6,10 @@ LABEL \
     org.label-schema.schema-version="1.0"
 
 # Setup
-ENV GRADLE_HOME="~/.gradle"
-COPY . "~/temp"
+ENV GRADLE_HOME="/root/.gradle"
+COPY . "/root/temp"
 
 # Install
 ARG GRADLE_VERSION
-RUN "~/temp/tools/install.sh" \
-    && rm -rf "~/temp"
+RUN "/root/temp/tools/install.sh" \
+    && rm -rf "/root/temp"

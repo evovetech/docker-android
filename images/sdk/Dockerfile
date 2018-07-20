@@ -6,7 +6,7 @@ LABEL \
     org.label-schema.schema-version="1.0"
 
 # Setup
-ENV ANDROID_ROOT="~/android"
+ENV ANDROID_ROOT="/root/android"
 RUN echo "Set ANDROID_HOME to ${ANDROID_ROOT}/sdk" \
     && mkdir -p "${ANDROID_ROOT}/sdk" \
     && echo "Bootstrapping SDK-Tools" \
@@ -16,7 +16,7 @@ RUN echo "Set ANDROID_HOME to ${ANDROID_ROOT}/sdk" \
 
 
 # Copy Licenses & Tools
-COPY . "${ANDROID_ROOT}"
+COPY tools "${ANDROID_ROOT}/tools"
 
 # Install
 ONBUILD RUN ${ANDROID_ROOT}/tools/install.sh
