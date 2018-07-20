@@ -14,7 +14,6 @@ RUN echo "Set ANDROID_HOME to ${ANDROID_ROOT}/sdk" \
     && unzip sdk-tools-linux.zip -d "${ANDROID_ROOT}/sdk" \
     && rm -rf sdk-tools-linux.zip
 
-
 # Copy Licenses & Tools
 COPY tools "${ANDROID_ROOT}/tools"
 
