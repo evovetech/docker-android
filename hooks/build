@@ -1,10 +1,5 @@
 #!/bin/bash
 
-ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
-IMAGES="${ROOT}/images"
-
-source "${ROOT}/bin/env.sh"
-
 function build_image() {
   local name="$1"
   local tag="$2"
@@ -33,36 +28,46 @@ function build_image() {
   fi
 }
 
+function build_base_images() {
+  # Build base image
+  build_image base latest
 
-# Build base image
-build_image base latest
+  # Build sdk image
+  {
+    build_image sdk latest
+  } &
+  sdk_job=$!
+  echo "sdk_job=${sdk_job}"
 
-# Build sdk image
-{
-  build_image sdk latest
-} &
-sdk_job=$!
-echo "sdk_job=${sdk_job}"
+  # Build gradle image
+  {
+    build_image gradle "${GRADLE_VERSION}" \
+        --build-arg "GRADLE_VERSION=${GRADLE_VERSION}"
+  } &
+  gradle_job=$!
+  echo "gradle_job=${gradle_job}"
 
-# Build gradle image
-{
-  build_image gradle "${GRADLE_VERSION}" \
-      --build-arg "GRADLE_VERSION=${GRADLE_VERSION}"
-} &
-gradle_job=$!
-echo "gradle_job=${gradle_job}"
+  wait ${sdk_job}
+  echo "sdk_job = success!"
 
-wait ${sdk_job}
-echo "sdk_job = success!"
+  wait ${gradle_job}
+  echo "gradle_job = success!"
+}
 
-wait ${gradle_job}
-echo "gradle_job = success!"
+ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
+IMAGES="${ROOT}/images"
+
+source "${ROOT}/bin/env.sh"
+
+# Build base images
+build_base_images
 
 # Build main image
-echo "start main build"
+tag="evovetech/android:${CACHE_TAG}"
+echo "start main build tag=${tag}"
 docker build \
   --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
-  -t "evovetech/android:${CACHE_TAG}" \
+  -t "${tag}" \
   "${ROOT}"
 
 echo "success!"
