@@ -36,22 +36,27 @@ function android_update() {
     android_sdkmanager "--update --verbose"
 }
 
+function android_install_packages() {
+    while [[ $# -gt 0 ]]; do
+      local pkg="$1"
+      shift 1
+      echo "Installing package: ${pkg}"
+      android_sdkmanager "${pkg} --verbose"
+    done
+}
+
 function android_install() {
     if [[ $# -eq 0 ]]; then
         help
         return 1
     fi
 
-    echo "Installing packages"
     local prev_ifs="$IFS"
     IFS=$'\n'
     local pkgs=($( cat "$@" ))
     IFS="${prev_ifs}"
 
-    local pkg
-    for pkg in "${pkgs[@]}"; do
-      android_sdkmanager "${pkg} --verbose"
-    done
+    android_install_packages "${pkgs[@]}"
 }
 
 export -f help

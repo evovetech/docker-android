@@ -2,5 +2,11 @@
 
 source "${ANDROID_ROOT}/tools/env.sh"
 
-echo "Installing packages"
-android_install "${@}"
+if [[ -n "$1" ]]; then
+  pkgs=("$@")
+  echo "Installing packages: ${pkgs[@]}"
+  android_install_packages "${pkgs[@]}"
+else
+  echo "Installing default packages"
+  android_install default-packages.txt
+fi

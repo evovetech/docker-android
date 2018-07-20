@@ -26,5 +26,5 @@ COPY tools .
 ENTRYPOINT ["./entrypoint.sh"]
 
 # Update sdk on build
-ONBUILD ARG INSTALL_PACKAGES_FILE=default-packages.txt
-ONBUILD RUN ./install.sh ${INSTALL_PACKAGES_FILE}
+ONBUILD ARG INSTALL_PACKAGE_LIST=""
+ONBUILD RUN ./install.sh "${INSTALL_PACKAGE_LIST}"
