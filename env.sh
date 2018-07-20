@@ -3,12 +3,31 @@
 function main() {
   local default_gradle_version="gradle-4.9"
 
+  local docker_tag
   if [[ -z "${DOCKER_TAG}" ]]; then
-    setGradleVersion
-    export DOCKER_TAG="${GRADLE_VERSION}"
+    docker_tag="${default_gradle_version}"
   else
-    setGradleVersion
+    docker_tag="${DOCKER_TAG}"
   fi
+  echo "default_docker_tag=${docker_tag}"
+
+  if [[ -z "${GRADLE_VERSION}" ]]; then
+      case $docker_tag in
+        gradle- )
+          ## ignore
+          ;;
+        * )
+          docker_tag="${default_gradle_version}"
+          ;;
+      esac
+      export GRADLE_VERSION="${docker_tag}"
+  fi
+  echo "GRADLE_VERSION=${GRADLE_VERSION}"
+
+  if [[ -z "${DOCKER_TAG}" ]]; then
+    export DOCKER_TAG="${GRADLE_VERSION}"
+  fi
+  echo "DOCKER_TAG=${DOCKER_TAG}"
 
   if [[ -z "${BUILD_PATH}" ]]; then
     export BUILD_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -24,31 +43,6 @@ function main() {
 
   if [[ -z "${IMAGE_NAME}" ]]; then
     export IMAGE_NAME="${DOCKER_REPO}:${DOCKER_TAG}"
-  fi
-}
-
-function defaultDockerTag() {
-    if [[ -z "${DOCKER_TAG}" ]]; then
-      printf "${default_gradle_version}"
-    else
-      printf "${DOCKER_TAG}"
-    fi
-}
-
-function setGradleVersion() {
-  if [[ -z "${GRADLE_VERSION}" ]]; then
-      local tag="$( defaultDockerTag )"
-      echo "defaultDockerTag=${tag}"
-      case $tag in
-        gradle- )
-          ## ignore
-          ;;
-        * )
-          tag="${default_gradle_version}"
-          ;;
-      esac
-      echo "dockerTag=${tag}"
-      export GRADLE_VERSION="${tag}"
   fi
 }
 
