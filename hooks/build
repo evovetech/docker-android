@@ -3,7 +3,7 @@
 ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
 IMAGES="${ROOT}/images"
 
-source "${ROOT}/env.sh"
+source "${ROOT}/bin/env.sh"
 
 function build_image() {
   local name="$1"
@@ -56,10 +56,9 @@ wait ${sdk_job}
 wait ${gradle_job}
 
 # Build main image
-cd ${ROOT}
 docker build \
-    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
-    -t "evovetech/android:${CACHE_TAG}" \
-    .
+  --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
+  -t "evovetech/android:${CACHE_TAG}" \
+  "${ROOT}"
 
 echo "success!"
