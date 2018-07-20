@@ -49,5 +49,5 @@ if [[ -z "${DOCKER_REPO}" ]]; then
 fi
 
 if [[ -z "${IMAGE_NAME}" ]]; then
-  export IMAGE_NAME="${DOCKER_REPO}/${CACHE_TAG}"
+  export IMAGE_NAME="${DOCKER_REPO}:${CACHE_TAG}"
 fi

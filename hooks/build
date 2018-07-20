@@ -4,22 +4,37 @@ ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
 IMAGES="${ROOT}/images"
 source ${ROOT}/env.sh
 
+
 function main() {
+  local gradle="$1"
+  echo "start build: gradle_version=${gradle}"
+
   # Build base images
-  build_base_images
+  build_base_images "${gradle}"
 
   # Build main image
-  echo "start main build image=${IMAGE_NAME}"
-  docker build \
-    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
-    -t "${IMAGE_NAME}" \
-    -f "${DOCKERFILE_PATH}" \
-    "${ROOT}/context"
+  build_main_image "${gradle}"
 
   echo "success!"
 }
 
+function docker() {
+  # TODO: if debug
+  echo '  $ docker' "${@}"
+  command docker "${@}"
+}
+
+function build_main_image() {
+  local gradle="$1"
+  docker build \
+      --build-arg "GRADLE_VERSION=${gradle}" \
+      -t "${IMAGE_NAME}" \
+      "${ROOT}"
+}
+
 function build_base_images() {
+  local gradle="$1"
+
   # Build base image
   build_image base latest
 
@@ -27,15 +42,15 @@ function build_base_images() {
   {
     build_image sdk latest
   } &
-  sdk_job=$!
+  local sdk_job=$!
   echo "sdk_job=${sdk_job}"
 
   # Build gradle image
   {
-    build_image gradle "${GRADLE_VERSION}" \
-        --build-arg "GRADLE_VERSION=${GRADLE_VERSION}"
+    build_image gradle "${gradle}" \
+        --build-arg "GRADLE_VERSION=${gradle}"
   } &
-  gradle_job=$!
+  local gradle_job=$!
   echo "gradle_job=${gradle_job}"
 
   wait ${sdk_job}
@@ -48,22 +63,11 @@ function build_base_images() {
 function build_image() {
   local name="$1"
   local tag="$2"
-  local args=(
-    build
-    "${@:3}"
-    "${BUILD_ARGS[@]}"
-    -t "evovetech/android-${name}:${tag}"
-    "${IMAGES}/${name}"
-  )
 
-  # TODO: if debug
-  local log_args=(
-    '  $'
-    docker
-    "${args[@]}"
-  )
-  echo "${log_args[@]}"
-  docker "${args[@]}"
+  docker build \
+      "${@:3}" \
+      -t "evovetech/android-${name}:${tag}" \
+      "${IMAGES}/${name}"
 
   local st=$?
   if [[ $st -ne 0 ]]; then
@@ -71,5 +75,5 @@ function build_image() {
   fi
 }
 
-# Build
-main "$@"
+# run
+main "${GRADLE_VERSION}"

@@ -1,12 +1,12 @@
 # Gradle Image
-ARG GRADLE_VERSION=gradle-4.5.1
-FROM evovetech/android/gradle:${GRADLE_VERSION} as gradle_image
+ARG GRADLE_VERSION
+FROM evovetech/android-gradle:${GRADLE_VERSION} as gradle_image
 
 # Android Sdk Image
-FROM evovetech/android/sdk:latest as android_image
+FROM evovetech/android-sdk as android_image
 
 # Main Image
-FROM evovetech/android/base:latest
+FROM evovetech/android-base
 
 ENV HOME=/root \
     GRADLE_HOME=/root/.gradle \
