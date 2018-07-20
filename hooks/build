@@ -1,9 +1,6 @@
 #!/bin/bash
 
-ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
-IMAGES="${ROOT}/images"
-source ${ROOT}/env.sh
-
+source ${BUILD_PATH}/env.sh
 
 function main() {
   local gradle="$1"
@@ -29,7 +26,7 @@ function build_main_image() {
   docker build \
       --build-arg "GRADLE_VERSION=${gradle}" \
       -t "${IMAGE_NAME}" \
-      "${ROOT}"
+      "${BUILD_PATH}"
 }
 
 function build_base_images() {
@@ -67,7 +64,7 @@ function build_image() {
   docker build \
       "${@:3}" \
       -t "evovetech/android-${name}:${tag}" \
-      "${IMAGES}/${name}"
+      "${BUILD_PATH}/images/${name}"
 
   local st=$?
   if [[ $st -ne 0 ]]; then
