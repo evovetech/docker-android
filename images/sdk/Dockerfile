@@ -3,6 +3,7 @@ FROM ${DOCKER_REPO}/base
 
 # Setup
 ARG HOME
+WORKDIR HOME
 ENV ANDROID_HOME=${HOME}/sdk \
     ANDROID_TOOLS_DIR=${HOME}/sdk-tools \
     ANDROID_LICENSES_DIR=${HOME}/sdk-licenses
