@@ -19,6 +19,7 @@ function build_image() {
   local args=(
     build
     "${@:3}"
+    "${BUILD_ARGS[@]}"
     -t "${DOCKER_REPO}/${name}:${tag}"
     .
   )
@@ -26,7 +27,8 @@ function build_image() {
   # TODO: if debug
   local log_args=(
     '  $'
-    docker "${args_[@]}"
+    docker
+    "${args[@]}"
   )
   echo "${log_args[@]}"
 

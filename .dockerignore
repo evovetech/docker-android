@@ -1,6 +1,2 @@
-.git/
-.gitattributes
-.gitignore
-clean.sh
-create.sh
-run.sh
+*
+!tools

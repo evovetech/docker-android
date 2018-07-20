@@ -22,3 +22,8 @@ default_gradle_version="gradle-4.5.1"
 if [[ -z "${GRADLE_VERSION}" ]]; then
   export GRADLE_VERSION="${default_gradle_version}"
 fi
+
+if [[ -z "${ONBUILD_HOME}" ]]; then
+  export ONBUILD_HOME=/home/android
+fi
+add_build_arg "HOME=${ONBUILD_HOME}"
