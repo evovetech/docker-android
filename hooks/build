@@ -53,9 +53,13 @@ gradle_job=$!
 echo "gradle_job=${gradle_job}"
 
 wait ${sdk_job}
+echo "sdk_job = success!"
+
 wait ${gradle_job}
+echo "gradle_job = success!"
 
 # Build main image
+echo "start main build"
 docker build \
   --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
   -t "evovetech/android:${CACHE_TAG}" \
