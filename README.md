@@ -19,7 +19,7 @@
 
 [![](https://images.microbadger.com/badges/image/evovetech/android-gradle.svg)](https://microbadger.com/images/evovetech/android-gradle "Get your own image badge on microbadger.com")
 
-#### Super--Base Image
+#### Super--Bass Image
 
 [![](https://images.microbadger.com/badges/version/evovetech/android-base.svg)](https://microbadger.com/images/evovetech/android-base "Get your own version badge on microbadger.com")
 
