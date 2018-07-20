@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# set -e -o pipefail
-
-pathname="$( dirname "${DOCKERFILE_PATH}" )"
-ROOT="$( cd "${pathname}" && pwd )"
+ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
 IMAGES="${ROOT}/images"
 
 source "${ROOT}/env.sh"
@@ -57,5 +54,12 @@ echo "gradle_job=${gradle_job}"
 
 wait ${sdk_job}
 wait ${gradle_job}
+
+# Build main image
+cd ${ROOT}
+docker build \
+    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
+    -t "evovetech/android:${CACHE_TAG}" \
+    .
 
 echo "success!"

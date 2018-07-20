@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
-source ${ROOT}/env.sh
 
-docker push "${DOCKER_REPO}:base.${BASE_IMAGE_TAG}"
-docker push "${DOCKER_REPO}:base.${GRADLE_VERSION}"
+source ${ROOT}/bin/env.sh
+docker push "evovetech/android/base:latest"
+docker push "evovetech/android/gradle:${GRADLE_VERSION}"
+docker push "evovetech/android/sdk:latest"
