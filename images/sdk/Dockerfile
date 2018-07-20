@@ -18,7 +18,7 @@ COPY licenses ${ANDROID_LICENSES_DIR}
 COPY tools ${ANDROID_TOOLS_DIR}
 
 # Install
-RUN ${ANDROID_TOOLS_DIR}/install.sh \
+ONBUILD RUN ${ANDROID_TOOLS_DIR}/install.sh \
     && rm -rf ${ANDROID_TOOLS_DIR}/install.sh \
     && rm -rf ${ANDROID_TOOLS_DIR}/package-list.sh
 
