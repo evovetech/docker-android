@@ -59,11 +59,10 @@ source ${ROOT}/bin/env.sh
 build_base_images
 
 # Build main image
-tag="evovetech/android:${CACHE_TAG}"
-echo "start main build tag=${tag}"
+echo "start main build image=${IMAGE_NAME}"
 docker build \
   --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
-  -t "${tag}" \
+  -t "${IMAGE_NAME}" \
   "${ROOT}"
 
 echo "success!"

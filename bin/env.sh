@@ -39,3 +39,11 @@ if [[ -z "${CACHE_TAG}" ]]; then
 else
   setGradleVersion
 fi
+
+if [[ -z "${DOCKER_REPO}" ]]; then
+  export DOCKER_REPO="evovetech/android"
+fi
+
+if [[ -z "${IMAGE_NAME}" ]]; then
+  export IMAGE_NAME="${DOCKER_REPO}/${CACHE_TAG}"
+fi

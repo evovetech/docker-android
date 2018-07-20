@@ -9,5 +9,5 @@ source ${bin}/env.sh
 ${bin}/build.sh
 
 # push main image
-docker push "evovetech/android:${CACHE_TAG}"
+docker push "${IMAGE_NAME}"
 ${root}/hooks/post_push
