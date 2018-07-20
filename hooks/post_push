@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ${BUILD_PATH}/env.sh
+ROOT="$( cd "${BUILD_PATH}" && pwd )"
+source ${ROOT}/env.sh
 docker push "evovetech/android-base:latest"
 docker push "evovetech/android-gradle:${GRADLE_VERSION}"
 docker push "evovetech/android-sdk:latest"
