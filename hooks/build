@@ -1,29 +1,24 @@
 #!/bin/bash
 
-function build_image() {
-  local name="$1"
-  local tag="$2"
-  local args=(
-    build
-    "${@:3}"
-    "${BUILD_ARGS[@]}"
-    -t "evovetech/android-${name}:${tag}"
-    "${ROOT}/images/${name}"
-  )
+MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
+echo "starting build -- ROOT=${ROOT}, MY_DIR=${MY_DIR}, DOCKERFILE_PATH=${DOCKERFILE_PATH}"
 
-  # TODO: if debug
-  local log_args=(
-    '  $'
-    docker
-    "${args[@]}"
-  )
-  echo "${log_args[@]}"
-  docker "${args[@]}"
+function main() {
+  # Build base images
+  source ${ROOT}/bin/env.sh
 
-  local st=$?
-  if [[ $st -ne 0 ]]; then
-    exit $st
-  fi
+  # TODO:
+  # build_base_images
+
+  # Build main image
+  echo "start main build image=${IMAGE_NAME}"
+  docker build \
+    --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
+    -t "${IMAGE_NAME}" \
+    "${ROOT}"
+
+  echo "success!"
 }
 
 function build_base_images() {
@@ -52,17 +47,31 @@ function build_base_images() {
   echo "gradle_job = success!"
 }
 
-ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
+function build_image() {
+  local name="$1"
+  local tag="$2"
+  local args=(
+    build
+    "${@:3}"
+    "${BUILD_ARGS[@]}"
+    -t "evovetech/android-${name}:${tag}"
+    "${ROOT}/images/${name}"
+  )
 
-# Build base images
-source ${ROOT}/bin/env.sh
-build_base_images
+  # TODO: if debug
+  local log_args=(
+    '  $'
+    docker
+    "${args[@]}"
+  )
+  echo "${log_args[@]}"
+  docker "${args[@]}"
 
-# Build main image
-echo "start main build image=${IMAGE_NAME}"
-docker build \
-  --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
-  -t "${IMAGE_NAME}" \
-  "${ROOT}"
+  local st=$?
+  if [[ $st -ne 0 ]]; then
+    exit $st
+  fi
+}
 
-echo "success!"
+# TODO: build
+main "$@"

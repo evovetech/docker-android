@@ -1,6 +1,8 @@
 #!/bin/bash
 
+MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
+echo "starting build -- ROOT=${ROOT}, MY_DIR=${MY_DIR}, DOCKERFILE_PATH=${DOCKERFILE_PATH}"
 
 source ${ROOT}/bin/env.sh
 docker push "evovetech/android-base:latest"
