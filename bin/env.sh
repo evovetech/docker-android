@@ -5,7 +5,7 @@ printenv
 echo ''
 echo ''
 
-default_gradle_version="gradle-4.5.1"
+default_gradle_version="gradle-4.9"
 
 function defaultCacheTag() {
     if [[ -z "${CACHE_TAG}" ]]; then
