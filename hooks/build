@@ -7,7 +7,7 @@ function build_image() {
     build
     "${@:3}"
     "${BUILD_ARGS[@]}"
-    -t "evovetech/android/${name}:${tag}"
+    -t "evovetech/android-${name}:${tag}"
     .
   )
 

@@ -3,6 +3,6 @@
 ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
 
 source ${ROOT}/bin/env.sh
-docker push "evovetech/android/base:latest"
-docker push "evovetech/android/gradle:${GRADLE_VERSION}"
-docker push "evovetech/android/sdk:latest"
+docker push "evovetech/android-base:latest"
+docker push "evovetech/android-gradle:${GRADLE_VERSION}"
+docker push "evovetech/android-sdk:latest"
