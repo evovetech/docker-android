@@ -33,8 +33,7 @@ function setGradleVersion() {
 }
 
 if [[ -z "${DOCKERFILE_PATH}" ]]; then
-  bin="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-  root="$( cd "${bin}/.." && pwd )"
+  root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   export DOCKERFILE_PATH="${root}/Dockerfile"
 fi
 

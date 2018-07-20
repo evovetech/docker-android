@@ -1,22 +1,20 @@
 #!/bin/bash
 
-MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$( cd "$( dirname "${DOCKERFILE_PATH}" )" && pwd )"
-echo "starting build -- ROOT=${ROOT}, MY_DIR=${MY_DIR}, DOCKERFILE_PATH=${DOCKERFILE_PATH}"
+IMAGES="${ROOT}/images"
+source ${ROOT}/env.sh
 
 function main() {
   # Build base images
-  source ${ROOT}/bin/env.sh
-
-  # TODO:
-  # build_base_images
+  build_base_images
 
   # Build main image
   echo "start main build image=${IMAGE_NAME}"
   docker build \
     --build-arg "GRADLE_VERSION=${GRADLE_VERSION}" \
     -t "${IMAGE_NAME}" \
-    "${ROOT}"
+    -f "${DOCKERFILE_PATH}" \
+    "${ROOT}/context"
 
   echo "success!"
 }
@@ -55,7 +53,7 @@ function build_image() {
     "${@:3}"
     "${BUILD_ARGS[@]}"
     -t "evovetech/android-${name}:${tag}"
-    "${ROOT}/images/${name}"
+    "${IMAGES}/${name}"
   )
 
   # TODO: if debug
@@ -73,5 +71,5 @@ function build_image() {
   fi
 }
 
-# TODO: build
+# Build
 main "$@"
