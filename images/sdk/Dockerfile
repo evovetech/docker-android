@@ -1,28 +1,22 @@
-ARG DOCKER_REPO
-FROM ${DOCKER_REPO}/base
-
-# Setup
-ARG HOME
-WORKDIR HOME
-ENV ANDROID_HOME=${HOME}/sdk \
-    ANDROID_TOOLS_DIR=${HOME}/sdk-tools \
-    ANDROID_LICENSES_DIR=${HOME}/sdk-licenses
-
-# Bootstrap
-COPY bootstrap.sh ${HOME}/bootstrap.sh
-RUN ${HOME}/bootstrap.sh \
-    && rm -rf ${HOME}/bootstrap.sh
-
-# Copy Licenses & Tools
-COPY licenses ${ANDROID_LICENSES_DIR}
-COPY tools ${ANDROID_TOOLS_DIR}
-
-# Install
-ONBUILD RUN ${ANDROID_TOOLS_DIR}/install.sh \
-    && rm -rf ${ANDROID_TOOLS_DIR}/install.sh \
-    && rm -rf ${ANDROID_TOOLS_DIR}/package-list.sh
+FROM evovetech/android/base
 
 # MicroBadger
 LABEL \
     org.label-schema.vcs-url="https://github.com/evovetech/docker-android" \
     org.label-schema.schema-version="1.0"
+
+# Setup
+ENV ANDROID_ROOT="~/android"
+RUN echo "Set ANDROID_HOME to ${ANDROID_ROOT}/sdk" \
+    && mkdir -p "${ANDROID_ROOT}/sdk" \
+    && echo "Bootstrapping SDK-Tools" \
+    && wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O sdk-tools-linux.zip \
+    && unzip sdk-tools-linux.zip -d "${ANDROID_ROOT}/sdk" \
+    && rm -rf sdk-tools-linux.zip
+
+
+# Copy Licenses & Tools
+COPY . "${ANDROID_ROOT}"
+
+# Install
+ONBUILD RUN ${ANDROID_ROOT}/tools/install.sh

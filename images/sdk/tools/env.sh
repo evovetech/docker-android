@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+export ANDROID_HOME="${ANDROID_ROOT}/sdk"
 export ANDROID_SDK_ROOT=${ANDROID_HOME}
 export ANDROID_SDK_HOME=${ANDROID_HOME}
 export ANDROID_SDK=${ANDROID_HOME}
@@ -27,7 +28,7 @@ function help() {
 }
 
 function android_sdkmanager() {
-    local cmd="${ANDROID_TOOLS_DIR}/sdkmanager.sh"
+    local cmd="${ANDROID_ROOT}/tools/sdkmanager.sh"
     $cmd "sdkmanager $@"
 }
 
