@@ -1,11 +1,11 @@
 #!/bin/bash
 
-dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # build
-source ${dir}/env.sh
-${dir}/build.sh
+source env.sh
+./build.sh
 
 # push
 docker push "${IMAGE_NAME}"
-${dir}/hooks/post_push
+hooks/post_push

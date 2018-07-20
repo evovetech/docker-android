@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 function main() {
   local default_gradle_version="gradle-4.9"
 
@@ -29,16 +31,12 @@ function main() {
   fi
   echo "DOCKER_TAG=${DOCKER_TAG}"
 
-  if [[ -z "${BUILD_PATH}" ]]; then
-    export BUILD_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-  fi
-
   if [[ -z "${DOCKER_REPO}" ]]; then
     export DOCKER_REPO="evovetech/android"
   fi
 
   if [[ -z "${DOCKERFILE_PATH}" ]]; then
-    export DOCKERFILE_PATH="${BUILD_PATH}/Dockerfile"
+    export DOCKERFILE_PATH="${ROOT_DIR}/Dockerfile"
   fi
 
   if [[ -z "${IMAGE_NAME}" ]]; then

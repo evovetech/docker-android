@@ -1,11 +1,6 @@
 #!/bin/bash
 
-ROOT="${BUILD_PATH}"
-if [[ "${BUILD_PATH}" == "/" ]]; then
-  ROOT=""
-fi
-
-source ${ROOT}/env.sh
+source env.sh
 
 docker push "evovetech/android-base:latest"
 docker push "evovetech/android-gradle:${GRADLE_VERSION}"
