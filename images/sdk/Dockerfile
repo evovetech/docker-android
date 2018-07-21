@@ -1,4 +1,4 @@
-FROM evovetech/android/base
+FROM evovetech/android-base
 
 # MicroBadger
 LABEL \
