@@ -10,3 +10,6 @@ else
   echo "Installing default packages"
   android_install default-packages.txt
 fi
+
+echo "Updating SDK"
+android_update

@@ -18,7 +18,6 @@ VOLUME "${GRADLE_HOME}"
 
 # Copy Android Sdk
 COPY --from=android_image "${ANDROID_ROOT}" "${ANDROID_ROOT}"
-VOLUME "${ANDROID_ROOT}/sdk"
 
 #
 WORKDIR "${HOME}"
@@ -28,3 +27,4 @@ ENTRYPOINT ["./entrypoint.sh"]
 # Update sdk on build
 ONBUILD ARG INSTALL_PACKAGE_LIST
 ONBUILD RUN ./install.sh ${INSTALL_PACKAGE_LIST}
+ONBUILD VOLUME "${ANDROID_ROOT}/sdk"
