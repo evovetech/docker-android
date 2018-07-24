@@ -12,4 +12,4 @@ else
 fi
 
 echo "Updating SDK"
-android_update
+android_sdkmanager --update --verbose
