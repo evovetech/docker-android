@@ -13,17 +13,15 @@ function main() {
   fi
   echo "default_docker_tag=${docker_tag}"
 
-  if [[ -z "${GRADLE_VERSION}" ]]; then
-      case $docker_tag in
-        gradle- )
-          ## ignore
-          ;;
-        * )
-          docker_tag="${default_gradle_version}"
-          ;;
-      esac
-      export GRADLE_VERSION="${docker_tag}"
-  fi
+  case $docker_tag in
+    gradle- )
+      ## ignore
+      ;;
+    * )
+      docker_tag="${default_gradle_version}"
+      ;;
+  esac
+  export GRADLE_VERSION="${docker_tag}"
   echo "GRADLE_VERSION=${GRADLE_VERSION}"
 
   if [[ -z "${DOCKER_TAG}" ]]; then
