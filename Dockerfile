@@ -14,7 +14,6 @@ ENV HOME=/root \
 
 # Copy Gradle
 COPY --from=gradle_image "${GRADLE_HOME}" "${GRADLE_HOME}"
-VOLUME "${GRADLE_HOME}"
 
 # Copy Android Sdk
 COPY --from=android_image "${ANDROID_ROOT}" "${ANDROID_ROOT}"
@@ -28,3 +27,4 @@ ENTRYPOINT ["./entrypoint.sh"]
 ONBUILD ARG INSTALL_PACKAGE_LIST
 ONBUILD RUN ./install.sh ${INSTALL_PACKAGE_LIST}
 ONBUILD VOLUME "${ANDROID_ROOT}/sdk"
+ONBUILD VOLUME "${GRADLE_HOME}"
