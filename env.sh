@@ -3,7 +3,7 @@
 export ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function main() {
-  local default_gradle_version="gradle-4.9-bin"
+  local default_gradle_version="gradle-4.10.1-all"
 
   local docker_tag
   if [[ -z "${DOCKER_TAG}" ]]; then
